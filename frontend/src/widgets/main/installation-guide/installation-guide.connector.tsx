@@ -125,7 +125,7 @@ export const InstallationGuideConnector = (props: IProps) => {
         if (buttons.length === 0) return null
 
         return (
-            <Group gap="xs" wrap="wrap">
+            <Group gap={isMobile ? 6 : 'xs'} wrap="wrap">
                 {buttons.map((button, index) => (
                     <Button
                         key={index}
@@ -139,6 +139,7 @@ export const InstallationGuideConnector = (props: IProps) => {
                         }
                         onClick={() => handleButtonClick(button)}
                         radius="md"
+                        size={isMobile ? 'sm' : 'md'}
                         variant={variant}
                     >
                         {t(button.text)}
@@ -151,10 +152,10 @@ export const InstallationGuideConnector = (props: IProps) => {
     const getIcon = (iconKey: string) => getIconFromLibrary(iconKey, svgLibrary)
 
     return (
-        <Card p={{ base: 'sm', xs: 'md', sm: 'lg', md: 'xl' }} radius="lg">
-            <Stack gap="md">
-                <Group gap="sm" justify="space-between">
-                    <Title c="white" fw={600} order={4}>
+        <Card p={{ base: 'xs', xs: 'sm', sm: 'lg', md: 'xl' }} radius="lg">
+            <Stack gap={isMobile ? 'sm' : 'md'}>
+                <Group gap="xs" justify="space-between" wrap="nowrap">
+                    <Title c="white" fw={600} order={4} size={isMobile ? 'h5' : undefined}>
                         {t(baseTranslations.installationGuideHeader)}
                     </Title>
 

@@ -4,6 +4,7 @@ import { TSubscriptionPagePlatformKey } from '@remnawave/subscription-page-types
 import {
     AccordionBlockRenderer,
     CardsBlockRenderer,
+    ConnectionWizardConnector,
     InstallationGuideConnector,
     MinimalBlockRenderer,
     RawKeysWidget,
@@ -19,7 +20,9 @@ import { Page, RemnawaveLogo } from '@shared/ui'
 
 interface IMainPageComponentProps {
     isMobile: boolean
+    onExitWizard?: () => void
     platform: TSubscriptionPagePlatformKey | undefined
+    wizardMode?: boolean
 }
 
 const BLOCK_RENDERERS = {
@@ -36,7 +39,12 @@ const SUBSCRIPTION_INFO_BLOCK_RENDERERS = {
     hidden: null
 } as const
 
-export const MainPageComponent = ({ isMobile, platform }: IMainPageComponentProps) => {
+export const MainPageComponent = ({
+    isMobile,
+    platform,
+    wizardMode = false,
+    onExitWizard
+}: IMainPageComponentProps) => {
     const config = useAppConfig()
     const currentLang = useCurrentLang()
     const { setLanguage } = useAppConfigStoreActions()
@@ -65,31 +73,33 @@ export const MainPageComponent = ({ isMobile, platform }: IMainPageComponentProp
     const SubscriptionInfoBlockRenderer =
         SUBSCRIPTION_INFO_BLOCK_RENDERERS[config.uiConfig.subscriptionInfoBlockType]
 
+    const logoSize = isMobile ? 26 : 32
+
     return (
         <Page>
-            <Box className="header-wrapper" py="md">
-                <Container maw={1200} px={{ base: 'md', sm: 'lg', md: 'xl' }}>
-                    <Group justify="space-between">
-                        <Group gap="sm" style={{ userSelect: 'none' }} wrap="nowrap">
+            <Box className="header-wrapper" py={isMobile ? 8 : 'md'}>
+                <Container maw={1200} px={{ base: 'sm', sm: 'lg', md: 'xl' }}>
+                    <Group justify="space-between" wrap="nowrap">
+                        <Group gap={isMobile ? 6 : 'sm'} style={{ userSelect: 'none' }} wrap="nowrap">
                             {hasCustomLogo ? (
                                 <Image
                                     alt="logo"
                                     fit="contain"
                                     src={config.brandingSettings.logoUrl}
                                     style={{
-                                        width: '32px',
-                                        height: '32px',
+                                        width: `${logoSize}px`,
+                                        height: `${logoSize}px`,
                                         flexShrink: 0
                                     }}
                                 />
                             ) : (
-                                <RemnawaveLogo c="cyan" size={32} />
+                                <RemnawaveLogo c="cyan" size={logoSize} />
                             )}
                             <Title
                                 c={hasCustomLogo ? 'white' : 'cyan'}
                                 fw={700}
                                 order={4}
-                                size="lg"
+                                size={isMobile ? 'md' : 'lg'}
                             >
                                 {brandName}
                             </Title>
@@ -105,25 +115,33 @@ export const MainPageComponent = ({ isMobile, platform }: IMainPageComponentProp
 
             <Container
                 maw={1200}
-                px={{ base: 'md', sm: 'lg', md: 'xl' }}
-                py="xl"
+                px={{ base: 'sm', sm: 'lg', md: 'xl' }}
+                py={isMobile ? 'sm' : 'xl'}
                 style={{ position: 'relative', zIndex: 1 }}
             >
-                <Stack gap="xl">
+                <Stack gap={isMobile ? 'sm' : 'xl'}>
                     {SubscriptionInfoBlockRenderer && (
                         <SubscriptionInfoBlockRenderer isMobile={isMobile} />
                     )}
 
-                    {atLeastOnePlatformApp && (
-                        <InstallationGuideConnector
-                            BlockRenderer={
-                                BLOCK_RENDERERS[config.uiConfig.installationGuidesBlockType]
-                            }
-                            hasPlatformApps={hasPlatformApps}
-                            isMobile={isMobile}
-                            platform={platform}
-                        />
-                    )}
+                    {atLeastOnePlatformApp &&
+                        (wizardMode && onExitWizard ? (
+                            <ConnectionWizardConnector
+                                hasPlatformApps={hasPlatformApps}
+                                isMobile={isMobile}
+                                onExit={onExitWizard}
+                                platform={platform}
+                            />
+                        ) : (
+                            <InstallationGuideConnector
+                                BlockRenderer={
+                                    BLOCK_RENDERERS[config.uiConfig.installationGuidesBlockType]
+                                }
+                                hasPlatformApps={hasPlatformApps}
+                                isMobile={isMobile}
+                                platform={platform}
+                            />
+                        ))}
 
                     <RawKeysWidget isMobile={isMobile} />
 

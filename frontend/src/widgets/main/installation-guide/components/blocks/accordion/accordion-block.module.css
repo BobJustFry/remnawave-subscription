@@ -43,3 +43,13 @@
     min-width: 20px;
     height: 18px;
 }
+
+@media (max-width: 30rem) {
+    .accordionControl {
+        padding: 8px 10px;
+    }
+
+    .accordionContent {
+        padding: 0 10px 10px;
+    }
+}

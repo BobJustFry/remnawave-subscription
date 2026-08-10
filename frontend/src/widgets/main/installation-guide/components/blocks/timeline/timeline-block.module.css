@@ -7,6 +7,16 @@
     padding-bottom: var(--mantine-spacing-md);
 }
 
+@media (max-width: 30rem) {
+    .timelineItem {
+        padding-bottom: var(--mantine-spacing-xs);
+    }
+
+    .timelineItem :global(.mantine-Timeline-itemTitle) {
+        margin-bottom: 4px;
+    }
+}
+
 .timelineItemBullet {
     background: transparent !important;
     border: none !important;

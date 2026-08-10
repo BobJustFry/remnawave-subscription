@@ -37,6 +37,7 @@ export const MainPageConnector = () => {
     })
 
     const [isMediaQueryReady, setIsMediaQueryReady] = useState(false)
+    const [exitedWizard, setExitedWizard] = useState(false)
 
     useEffect(() => {
         setIsMediaQueryReady(true)
@@ -45,5 +46,12 @@ export const MainPageConnector = () => {
     if (!isConfigLoaded || !subscription || !config || !isMediaQueryReady)
         return <LoadingScreen height="100vh" />
 
-    return <MainPageComponent isMobile={isMobile} platform={osToPlatform(os)} />
+    return (
+        <MainPageComponent
+            isMobile={isMobile}
+            onExitWizard={() => setExitedWizard(true)}
+            platform={osToPlatform(os)}
+            wizardMode={!exitedWizard}
+        />
+    )
 }

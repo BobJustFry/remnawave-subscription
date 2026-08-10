@@ -16,14 +16,14 @@ export const TimelineBlockRenderer = ({
     return (
         <Timeline
             active={blocks.length}
-            bulletSize={isMobile ? 36 : 44}
+            bulletSize={isMobile ? 28 : 44}
             classNames={{
                 root: classes.timelineRoot,
                 item: classes.timelineItem,
                 itemBullet: classes.timelineItemBullet
             }}
             color="cyan"
-            lineWidth={2}
+            lineWidth={isMobile ? 1.5 : 2}
         >
             {blocks.map((block, index) => {
                 const gradientStyle = getColorGradientSolid(block.svgIconColor)
@@ -51,14 +51,14 @@ export const TimelineBlockRenderer = ({
                             />
                         }
                     >
-                        <Stack gap="xs">
+                        <Stack gap={isMobile ? 6 : 'xs'}>
                             <Text
                                 c="dimmed"
                                 dangerouslySetInnerHTML={{
                                     __html: getLocalizedText(block.description, currentLang)
                                 }}
                                 size={isMobile ? 'xs' : 'sm'}
-                                style={{ lineHeight: 1.6 }}
+                                style={{ lineHeight: isMobile ? 1.35 : 1.6 }}
                             />
                             {renderBlockButtons(block.buttons, 'light')}
                         </Stack>

@@ -14,7 +14,7 @@ export const CardsBlockRenderer = ({
     getIconFromLibrary
 }: IBlockRendererProps) => {
     return (
-        <Stack gap="sm">
+        <Stack gap={isMobile ? 8 : 'sm'}>
             {blocks.map((block, index) => {
                 const gradientStyle = getColorGradient(block.svgIconColor)
 
@@ -22,10 +22,10 @@ export const CardsBlockRenderer = ({
                     <Card
                         className={classes.root}
                         key={index}
-                        p={{ base: 'sm', xs: 'md', sm: 'lg' }}
+                        p={{ base: 'xs', xs: 'sm', sm: 'lg' }}
                         radius="lg"
                     >
-                        <Group align="flex-start" gap={isMobile ? 'sm' : 'md'} wrap="nowrap">
+                        <Group align="flex-start" gap={isMobile ? 'xs' : 'md'} wrap="nowrap">
                             <ThemeIconShared
                                 getIconFromLibrary={getIconFromLibrary}
                                 gradientStyle={gradientStyle}
@@ -33,7 +33,7 @@ export const CardsBlockRenderer = ({
                                 svgIconColor={block.svgIconColor}
                                 svgIconKey={block.svgIconKey}
                             />
-                            <Stack gap={isMobile ? 'xs' : 'sm'} style={{ flex: 1, minWidth: 0 }}>
+                            <Stack gap={isMobile ? 6 : 'sm'} style={{ flex: 1, minWidth: 0 }}>
                                 <Title
                                     c="white"
                                     fw={600}

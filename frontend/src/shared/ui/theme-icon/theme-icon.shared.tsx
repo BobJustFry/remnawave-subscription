@@ -16,7 +16,7 @@ export const ThemeIconShared = (props: IProps) => {
         <ThemeIcon
             color={svgIconColor}
             radius="xl"
-            size={isMobile ? 36 : 44}
+            size={isMobile ? 28 : 44}
             style={{
                 background: gradientStyle.background,
                 border: gradientStyle.border,

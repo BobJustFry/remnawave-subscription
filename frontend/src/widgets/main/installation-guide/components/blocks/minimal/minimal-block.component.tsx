@@ -14,13 +14,13 @@ export const MinimalBlockRenderer = ({
     getIconFromLibrary
 }: IBlockRendererProps) => {
     return (
-        <Stack gap="md">
+        <Stack gap={isMobile ? 'sm' : 'md'}>
             {blocks.map((block, index) => {
                 const gradientStyle = getColorGradient(block.svgIconColor)
 
                 return (
                     <Box className={classes.stepBlock} key={index}>
-                        <Group gap="sm" mb="xs" wrap="nowrap">
+                        <Group gap="xs" mb={isMobile ? 4 : 'xs'} wrap="nowrap">
                             <ThemeIconShared
                                 getIconFromLibrary={getIconFromLibrary}
                                 gradientStyle={gradientStyle}
@@ -43,10 +43,10 @@ export const MinimalBlockRenderer = ({
                                 __html: getLocalizedText(block.description, currentLang)
                             }}
                             size={isMobile ? 'xs' : 'sm'}
-                            style={{ lineHeight: 1.6 }}
+                            style={{ lineHeight: isMobile ? 1.35 : 1.6 }}
                         />
                         {block.buttons.length > 0 && (
-                            <Box style={{ marginTop: 8 }}>
+                            <Box style={{ marginTop: isMobile ? 6 : 8 }}>
                                 {renderBlockButtons(block.buttons, 'subtle')}
                             </Box>
                         )}

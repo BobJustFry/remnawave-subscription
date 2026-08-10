@@ -41,6 +41,18 @@ body {
     }
 }
 
+@media (max-width: 30rem) {
+    html,
+    body {
+        background-size: 40px 40px;
+    }
+
+    .header-wrapper {
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+    }
+}
+
 .logo-text-highlight {
     color: var(--mantine-color-cyan-4);
 }
