@@ -61,7 +61,7 @@ const en: WizardDict = {
     noSubscriptionButtons: 'No subscription buttons are configured for this app.',
     canCloseTab: 'You can close this tab',
     canCloseTabHint: 'Setup is complete. Close the page manually if it did not close automatically.',
-    renew: 'Renew subscription',
+    renew: 'Renew',
     renewLeft: (days) => `${days} ${days === 1 ? 'day' : 'days'} left`,
     renewExpired: 'Subscription expired',
     renewUntil: (date) => `Active until ${date}`,
@@ -95,7 +95,7 @@ const ru: WizardDict = {
     noSubscriptionButtons: 'Для этого приложения нет кнопок добавления подписки.',
     canCloseTab: 'Можно закрыть вкладку',
     canCloseTabHint: 'Настройка завершена. Если окно не закрылось само — закройте страницу вручную.',
-    renew: 'Продлить подписку',
+    renew: 'Продлить',
     renewLeft: (days) => {
         const m10 = days % 10
         const m100 = days % 100
