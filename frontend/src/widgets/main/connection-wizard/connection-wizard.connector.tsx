@@ -12,10 +12,17 @@ import {
     Text,
     UnstyledButton
 } from '@mantine/core'
-import { IconArrowLeft, IconArrowRight, IconCheck, IconDownload } from '@tabler/icons-react'
+import {
+    IconAlertTriangle,
+    IconArrowLeft,
+    IconArrowRight,
+    IconCheck,
+    IconClockExclamation,
+    IconDownload
+} from '@tabler/icons-react'
 import { notifications } from '@mantine/notifications'
 import { useClipboard } from '@mantine/hooks'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import clsx from 'clsx'
 
 import { constructSubscriptionUrl } from '@shared/utils/construct-subscription-url'
@@ -40,6 +47,10 @@ interface IProps {
 }
 
 const TOTAL_STEPS = 4
+
+// TODO: replace with the real payment / bot link (or take it from app config)
+const RENEW_URL = 'https://t.me/example'
+const RENEW_WARN_DAYS = 3
 
 function collectButtons(
     app: TSubscriptionPageAppConfig,
@@ -99,6 +110,26 @@ export const ConnectionWizardConnector = (props: IProps) => {
                 icon: getIconFromLibrary(platformConfig.svgIconKey, svgLibrary)
             }
         })
+
+    const { daysLeft, expiresAt, userStatus } = subscription.user
+    const isExpired = userStatus === 'EXPIRED' || daysLeft <= 0
+    const needsRenew = isExpired || daysLeft <= RENEW_WARN_DAYS
+    const expiresLabel = new Date(expiresAt).toLocaleDateString(currentLang, {
+        day: 'numeric',
+        month: 'long'
+    })
+
+    useEffect(() => {
+        if (!needsRenew) return
+
+        document.body.classList.add('renew-bar-visible')
+        return () => document.body.classList.remove('renew-bar-visible')
+    }, [needsRenew])
+
+    const handleRenew = () => {
+        vibrate('tap')
+        window.open(RENEW_URL, '_blank', 'noopener,noreferrer')
+    }
 
     const subscriptionUrl = constructSubscriptionUrl(
         window.location.href,
@@ -571,6 +602,28 @@ export const ConnectionWizardConnector = (props: IProps) => {
                     {dict.exitWizard}
                 </Button>
             </Stack>
+
+            {needsRenew && (
+                <div className={clsx(classes.renewBar, isExpired && classes.renewBarExpired)}>
+                    <div className={classes.renewBarIcon}>
+                        {isExpired ? <IconAlertTriangle size={22} /> : <IconClockExclamation size={22} />}
+                    </div>
+                    <div className={classes.renewBarText}>
+                        <span className={classes.renewBarTitle}>
+                            {isExpired ? dict.renewExpired : dict.renewLeft(daysLeft)}
+                        </span>
+                        <span className={classes.renewBarMeta}>{isExpired ? dict.renewEndedOn(expiresLabel) : dict.renewUntil(expiresLabel)}</span>
+                    </div>
+                    <Button
+                        className={classes.renewBarButton}
+                        onClick={handleRenew}
+                        radius="md"
+                        size="compact-md"
+                    >
+                        {dict.renew}
+                    </Button>
+                </div>
+            )}
         </Card>
     )
 }

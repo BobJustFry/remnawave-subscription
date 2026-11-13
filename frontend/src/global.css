@@ -100,3 +100,7 @@ body {
     background: linear-gradient(135deg, rgba(253, 126, 20, 0.1) 0%, rgba(247, 103, 7, 0.05) 100%);
     border: 1px solid rgba(253, 126, 20, 0.2);
 }
+
+body.renew-bar-visible {
+    padding-top: 64px;
+}

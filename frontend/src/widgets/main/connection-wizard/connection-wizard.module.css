@@ -298,3 +298,78 @@
         padding-top: 12px;
     }
 }
+
+.renewBar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: 560px;
+    margin: 0 auto;
+    padding: calc(10px + env(safe-area-inset-top)) 14px 10px;
+    color: #2a1c00;
+    background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+    border-radius: 0 0 16px 16px;
+    box-shadow: 0 6px 24px rgba(245, 158, 11, 0.35);
+    animation: renewPulse 2.4s ease-in-out infinite;
+}
+
+.renewBarExpired {
+    color: #fff;
+    background: linear-gradient(90deg, #ef4444 0%, #dc2626 100%);
+    box-shadow: 0 6px 24px rgba(239, 68, 68, 0.4);
+}
+
+.renewBarIcon {
+    display: flex;
+    flex-shrink: 0;
+}
+
+.renewBarText {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.2;
+}
+
+.renewBarTitle {
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.renewBarMeta {
+    font-size: 11px;
+    opacity: 0.8;
+}
+
+.renewBarButton {
+    flex-shrink: 0;
+    white-space: nowrap;
+    color: #fff;
+    background: #0b1216;
+}
+
+.renewBarButton:hover {
+    background: #000;
+}
+
+@keyframes renewPulse {
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(1.08);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .renewBar {
+        animation: none;
+    }
+}
