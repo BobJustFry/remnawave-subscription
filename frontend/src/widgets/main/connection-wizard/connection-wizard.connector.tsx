@@ -48,7 +48,7 @@ interface IProps {
 
 const TOTAL_STEPS = 4
 
-const RENEW_URL = 'https://vupen.fun/app/renew/?utm_source=happ&utm_campaign=sub'
+const RENEW_URL = 'https://vupen.fun/app/renew/?utm_source=sub&utm_campaign=sub'
 const RENEW_WARN_DAYS = 3
 
 function collectButtons(
