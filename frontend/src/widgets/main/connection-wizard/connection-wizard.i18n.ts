@@ -25,6 +25,8 @@ type WizardDict = {
     noApps: string
     noInstallButtons: string
     noSubscriptionButtons: string
+    canCloseTab: string
+    canCloseTabHint: string
 }
 
 const en: WizardDict = {
@@ -51,7 +53,9 @@ const en: WizardDict = {
     selectApp: 'Choose a client to continue',
     noApps: 'No apps are configured for this platform yet.',
     noInstallButtons: 'No download links are configured for this app.',
-    noSubscriptionButtons: 'No subscription buttons are configured for this app.'
+    noSubscriptionButtons: 'No subscription buttons are configured for this app.',
+    canCloseTab: 'You can close this tab',
+    canCloseTabHint: 'Setup is complete. Close the page manually if it did not close automatically.'
 }
 
 const ru: WizardDict = {
@@ -78,7 +82,9 @@ const ru: WizardDict = {
     selectApp: 'Выберите клиент, чтобы продолжить',
     noApps: 'Для этой платформы приложения пока не настроены.',
     noInstallButtons: 'Для этого приложения нет ссылок на установку.',
-    noSubscriptionButtons: 'Для этого приложения нет кнопок добавления подписки.'
+    noSubscriptionButtons: 'Для этого приложения нет кнопок добавления подписки.',
+    canCloseTab: 'Можно закрыть вкладку',
+    canCloseTabHint: 'Настройка завершена. Если окно не закрылось само — закройте страницу вручную.'
 }
 
 const dictionaries: Partial<Record<TSubscriptionPageLanguageCode, WizardDict>> & {

@@ -166,7 +166,19 @@ export const ConnectionWizardConnector = (props: IProps) => {
             return
         }
 
-        onExit()
+        // Browsers allow window.close() only for script-opened windows.
+        // Try anyway; if the tab stays open, notify and fall back to classic UI.
+        window.close()
+        window.setTimeout(() => {
+            if (document.visibilityState === 'hidden') return
+
+            notifications.show({
+                title: dict.canCloseTab,
+                message: dict.canCloseTabHint,
+                color: 'cyan'
+            })
+            onExit()
+        }, 250)
     }
 
     const goBack = () => {
