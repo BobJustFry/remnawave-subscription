@@ -111,11 +111,26 @@ export const ConnectionWizardConnector = (props: IProps) => {
         })
 
     const { daysLeft, expiresAt, userStatus } = subscription.user
+    // Disabled/blocked: show a red notice but no renew button (renewal won't re-enable it).
+    const isDisabled = userStatus === 'DISABLED'
     const isExpired = userStatus === 'EXPIRED' || daysLeft <= 0
-    const needsRenew = isExpired || daysLeft <= RENEW_WARN_DAYS
-    const expiresLabel = new Date(expiresAt).toLocaleDateString(currentLang, {
+    const isLimited = userStatus === 'LIMITED' && !isExpired
+    const needsRenew = isDisabled || isExpired || isLimited || daysLeft <= RENEW_WARN_DAYS
+    const isCritical = isDisabled || isExpired || isLimited
+
+    let renewTitle = dict.renewLeft(daysLeft)
+    if (isDisabled) renewTitle = dict.renewDisabled
+    else if (isExpired) renewTitle = dict.renewExpired
+    else if (isLimited) renewTitle = dict.renewLimited
+    const expiresDate = new Date(expiresAt)
+    const nowYear = new Date().getFullYear()
+    const isOtherYear = expiresDate.getFullYear() !== nowYear
+    // Effectively unlimited subscription: no point in showing a date.
+    const isFarFuture = expiresDate.getFullYear() - nowYear >= 10
+    const expiresLabel = expiresDate.toLocaleDateString(currentLang, {
         day: 'numeric',
-        month: 'long'
+        month: 'long',
+        ...(isOtherYear && { year: 'numeric' })
     })
 
     useEffect(() => {
@@ -603,24 +618,30 @@ export const ConnectionWizardConnector = (props: IProps) => {
             </Stack>
 
             {needsRenew && (
-                <div className={clsx(classes.renewBar, isExpired && classes.renewBarExpired)}>
+                <div className={clsx(classes.renewBar, isCritical && classes.renewBarExpired)}>
                     <div className={classes.renewBarIcon}>
-                        {isExpired ? <IconAlertTriangle size={22} /> : <IconClockExclamation size={22} />}
+                        {isCritical ? <IconAlertTriangle size={22} /> : <IconClockExclamation size={22} />}
                     </div>
                     <div className={classes.renewBarText}>
                         <span className={classes.renewBarTitle}>
-                            {isExpired ? dict.renewExpired : dict.renewLeft(daysLeft)}
+                            {renewTitle}
                         </span>
-                        <span className={classes.renewBarMeta}>{isExpired ? dict.renewEndedOn(expiresLabel) : dict.renewUntil(expiresLabel)}</span>
+                        <span className={classes.renewBarMeta}>
+                            {isDisabled && dict.renewDisabledHint}
+                            {!isDisabled && isExpired && dict.renewEndedOn(expiresLabel)}
+                            {!isDisabled && !isExpired && !isFarFuture && dict.renewUntil(expiresLabel)}
+                        </span>
                     </div>
-                    <Button
-                        className={classes.renewBarButton}
-                        onClick={handleRenew}
-                        radius="md"
-                        size="compact-md"
-                    >
-                        {dict.renew}
-                    </Button>
+                    {!isDisabled && (
+                        <Button
+                            className={classes.renewBarButton}
+                            onClick={handleRenew}
+                            radius="md"
+                            size="compact-md"
+                        >
+                            {dict.renew}
+                        </Button>
+                    )}
                 </div>
             )}
         </Card>

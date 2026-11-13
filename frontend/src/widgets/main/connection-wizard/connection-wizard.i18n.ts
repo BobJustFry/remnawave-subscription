@@ -30,6 +30,9 @@ type WizardDict = {
     renew: string
     renewLeft: (days: number) => string
     renewExpired: string
+    renewLimited: string
+    renewDisabled: string
+    renewDisabledHint: string
     renewUntil: (date: string) => string
     renewEndedOn: (date: string) => string
 }
@@ -64,6 +67,9 @@ const en: WizardDict = {
     renew: 'Renew',
     renewLeft: (days) => `${days} ${days === 1 ? 'day' : 'days'} left`,
     renewExpired: 'Subscription expired',
+    renewLimited: 'Traffic limit reached',
+    renewDisabled: 'Subscription disabled',
+    renewDisabledHint: 'Contact support',
     renewUntil: (date) => `Active until ${date}`,
     renewEndedOn: (date) => `Ended on ${date}`
 }
@@ -103,6 +109,9 @@ const ru: WizardDict = {
         return `Осталось ${days} ${word}`
     },
     renewExpired: 'Подписка закончилась',
+    renewLimited: 'Трафик закончился',
+    renewDisabled: 'Подписка выключена',
+    renewDisabledHint: 'Обратитесь в поддержку',
     renewUntil: (date) => `Действует до ${date}`,
     renewEndedOn: (date) => `Закончилась ${date}`
 }
