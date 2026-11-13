@@ -48,8 +48,7 @@ interface IProps {
 
 const TOTAL_STEPS = 4
 
-// TODO: replace with the real payment / bot link (or take it from app config)
-const RENEW_URL = 'https://t.me/example'
+const RENEW_URL = 'https://vupen.fun/app/renew/?utm_source=happ&utm_campaign=sub'
 const RENEW_WARN_DAYS = 3
 
 function collectButtons(
